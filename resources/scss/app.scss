@@ -1,0 +1,19 @@
+@import "bootstrap.custom.scss";
+@import "font-awesome.custom.scss";
+
+$body-padding-full: $navbar-brand-height + $navbar-padding-y + $spacer;
+$body-padding-mobile: $navbar-brand-height + $navbar-padding-y + $spacer;
+
+@media screen and (min-width: map-get($grid-breakpoints, "sm")) {
+
+    body{
+        padding-top: $body-padding-full;
+    }
+}
+
+@media screen and (max-width: map-get($grid-breakpoints, "sm")) {
+
+    body{
+        padding-top: $body-padding-mobile;
+    }
+}
