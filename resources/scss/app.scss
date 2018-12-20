@@ -1,19 +1,31 @@
 @import "bootstrap.custom.scss";
 @import "font-awesome.custom.scss";
 
-$body-padding-full: $navbar-brand-height + $navbar-padding-y + $spacer;
-$body-padding-mobile: $navbar-brand-height + $navbar-padding-y + $spacer;
+$body-padding-lg: $navbar-brand-height + $navbar-padding-y + $spacer;
+$body-padding-md: $navbar-brand-height + $navbar-padding-y + $spacer;
+$body-padding-sm: $navbar-brand-height + $navbar-padding-y + $spacer;
+$body-padding-xs: $navbar-brand-height + $navbar-padding-y + $spacer;
 
-@media screen and (min-width: map-get($grid-breakpoints, "sm")) {
-
+@include media-breakpoint-up(lg) {
     body{
-        padding-top: $body-padding-full;
+        padding-top: $body-padding-lg;
     }
 }
 
-@media screen and (max-width: map-get($grid-breakpoints, "sm")) {
-
+@include media-breakpoint-up(md) {
     body{
-        padding-top: $body-padding-mobile;
+        padding-top: $body-padding-md;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    body{
+        padding-top: $body-padding-sm;
+    }
+}
+
+@include media-breakpoint-up(xs) {
+    body{
+        padding-top: $body-padding-xs;
     }
 }
