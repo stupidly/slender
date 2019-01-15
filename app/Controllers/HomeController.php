@@ -10,10 +10,10 @@ use Psr\Http\Message\{
 
 class HomeController extends Controller
 {
-    public function index(Request $request, Response $response, $args)
+    public function index(Request $request, Response $response)
     {
-        return $this->c->view->render($response, 'home.twig', [
-            'appName' => $this->c->settings['app']['name'],
+        return $this->c->get('view')->render($response, 'home.twig', [
+            'appName' => $this->c->get('settings')->get('app.name'),
         ]);
     }
 }

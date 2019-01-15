@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use Interop\Container\ContainerInterface;
+use App\Controllers\Controller;
+use Psr\Container\ContainerInterface;
 
 abstract class Controller
 {
@@ -16,9 +17,9 @@ abstract class Controller
     /**
      * Set up controllers to have access to the container.
      *
-     * @param \Interop\Container\ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->c = $container;
     }
