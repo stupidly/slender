@@ -23,18 +23,31 @@ $container->get('settings')->replace([
 
     'views' => [
         'cache' => getenv('VIEW_CACHE_DISABLED') === 'true' ? false : __DIR__ . '/../storage/views'
+    ],
+
+    'db' => [
+        'driver' => getenv('DB_DRIVER'),
+        'host' => getenv('DB_HOST'),
+        'database' => getenv('DB_DATABASE'),
+        'username' => getenv('DB_USERNAME'),
+        'password' => getenv('DB_PASSWORD'),
+        'charset' => getenv('DB_CHARSET'),
+        'collation' => getenv('DB_COLLATION'),
+        'prefix' => getenv('DB_PREFIX')
+    ],
+
+    'auth' => [
+        'alg' => getenv('AUTH_PASSWORD_ALG'),
+        'salt' => getenv('AUTH_PASSWORD_SALT'),
+        'cost' => getenv('AUTH_PASSWORD_COST')
     ]
 ]);
 
-$container->share('view', function () use ($container){
-    $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
-        'cache' => $container->get('settings')->get('views.cache')
-    ]);
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($container->get('settings')->get('db'));
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
 
-    $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
-    $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $basePath));
-
-    return $view;
-});
+$container->addServiceProvider(new App\Providers\ViewServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';
