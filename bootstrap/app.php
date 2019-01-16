@@ -18,7 +18,8 @@ $container->get('settings')->replace([
     'displayErrorDetails' => getenv('APP_DEBUG') === 'true',
 
     'app' => [
-        'name' => getenv('APP_NAME')
+        'name' => getenv('APP_NAME'),
+        'debug' => getenv('APP_DEBUG') === 'true',
     ],
 
     'views' => [
@@ -40,6 +41,13 @@ $container->get('settings')->replace([
         'alg' => getenv('AUTH_PASSWORD_ALG'),
         'salt' => getenv('AUTH_PASSWORD_SALT'),
         'cost' => getenv('AUTH_PASSWORD_COST')
+    ],
+
+    'log' => [
+        'path' => __DIR__ . '/..' . getenv('LOG_PATH'),
+        'level' => getenv('LOG_LEVEL'),
+        'dateFormat' => getenv('LOG_DATE_FORMAT'),
+        'outputFormat' => getenv('LOG_OUTPUT_FORMAT')
     ]
 ]);
 
@@ -49,5 +57,6 @@ $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
 $container->addServiceProvider(new App\Providers\ViewServiceProvider());
+$container->addServiceProvider(new App\Providers\MonologServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';

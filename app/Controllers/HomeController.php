@@ -11,7 +11,7 @@ use Psr\Http\Message\{
 
 class HomeController extends Controller
 {
-    public function index(Request $request, Response $response){
+	public function index(Request $request, Response $response){
     	return $this->c->get('view')->render($response, 'home.twig', [
             'appName' => $this->c->get('settings')->get('app.name'),
         ]);
