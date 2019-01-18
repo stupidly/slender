@@ -15,7 +15,8 @@
         "components/font-awesome": "^5.0",
         "jenssegers/lean": "^1.0",
         "illuminate/database": "^5.7",
-        "monolog/monolog": "^1.24"
+        "monolog/monolog": "^1.24",
+        "lcobucci/jwt": "^3.2"
     },
     "autoload": {
         "psr-4": {

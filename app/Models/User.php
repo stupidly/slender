@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Auth\Jwt\JwtSubjectInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model{
+class User extends Model implements JwtSubjectInterface{
 
 	protected $table = 'users';
 
@@ -22,4 +23,8 @@ class User extends Model{
 	protected $hidden = [
 		'password'
 	];
+
+	public function getJwtSubject() : string{
+		return $this->username;
+	}
 }

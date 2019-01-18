@@ -1,26 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Controllers\Controller;
-use Psr\Container\ContainerInterface;
+use League\Container\ContainerAwareInterface;
+use League\Container\ContainerAwareTrait;
 
-abstract class Controller
+abstract class Controller implements ContainerAwareInterface
 {
-    /**
-     * The container instance.
-     *
-     * @var \Interop\Container\ContainerInterface
-     */
-    protected $c;
-
-    /**
-     * Set up controllers to have access to the container.
-     *
-     * @param \Psr\Container\ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->c = $container;
-    }
+	use ContainerAwareTrait;
 }

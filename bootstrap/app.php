@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -12,7 +12,7 @@ $app = new Jenssegers\Lean\App();
 
 $container = $app->getContainer();
 
-$container->inflector(App\Controllers\Controller::class)->invokeMethod('setContainer', [$container]);
+$container->inflector(League\Container\ContainerAwareInterface::class)->invokeMethod('setContainer', [$container]);
 
 $container->get('settings')->replace([
     'displayErrorDetails' => getenv('APP_DEBUG') === 'true',
@@ -48,6 +48,11 @@ $container->get('settings')->replace([
         'level' => getenv('LOG_LEVEL'),
         'dateFormat' => getenv('LOG_DATE_FORMAT'),
         'outputFormat' => getenv('LOG_OUTPUT_FORMAT')
+    ],
+
+    'jwt' => [
+        'expiry' => getenv('JWT_EXPIRY'),
+        'secret' => getenv('JWT_SECRET')
     ]
 ]);
 
@@ -58,5 +63,8 @@ $capsule->bootEloquent();
 
 $container->addServiceProvider(new App\Providers\ViewServiceProvider());
 $container->addServiceProvider(new App\Providers\MonologServiceProvider());
+$container->addServiceProvider(new App\Auth\Providers\JwtAuthServiceProvider());
+$container->addServiceProvider(new App\Auth\Providers\EloquentAuthRepositoryProvider());
+$container->addServiceProvider(new App\Auth\Providers\LcobucciJwtLibProvider());
 
 require_once __DIR__ . '/../routes/web.php';
