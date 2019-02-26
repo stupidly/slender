@@ -1,0 +1,44 @@
+{% extends 'templates/page.twig' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/css/signup.css">
+{% endblock %}
+
+{% block content %}
+<div class="modal" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="signup-form" action="{{ path_for('signup') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signup-title">{{trans("common.sign_up")}}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">{{trans("common.username")}}</label>
+                        <input type="username" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="{{trans("common.username")}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">{{trans("common.password")}}</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="{{trans("common.password")}}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">{{trans("common.sign_up")}}</button>
+                </div>
+                <input type="hidden" name="redirect-url" value="{{ redirectUrl }}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block body_end %}
+    <script>
+        $("#signup-modal").modal({
+            keyboard: false,
+            show: true,
+            backdrop: "static"
+        });
+    </script>
+{% endblock %}

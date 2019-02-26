@@ -3,6 +3,7 @@
 namespace App\Middleware;
 
 use App\Auth\Auth;
+use Slim\Router;
 use Psr\Http\Message\{
     ServerRequestInterface as Request,
     ResponseInterface as Response
@@ -11,10 +12,13 @@ use Psr\Http\Message\{
 class AuthMiddleware{
 	
     protected $auth;
+    protected $redirectPath;
+    protected $router;
 
-    public function __construct(Auth $auth)
+    public function __construct(Auth $auth, Router $router)
     {
         $this->auth = $auth;
+        $this->router = $router;
     }
 
     public function __invoke(Request $request, Response $response, $next)
@@ -22,10 +26,16 @@ class AuthMiddleware{
         try{
             $this->auth->authenticate($request);
         }catch(\Exception $e){
-            return $response->withJson([
-                'message' => $e->getMessage()
-            ], 401);
+            if($request->getUri()->getPath() !== $this->redirectPath){
+                $this->redirectPath .= '?redirect-url=' . $request->getUri()->getPath();
+            }
+            return $response->withRedirect($this->redirectPath);
         }
         return $next($request, $response);
+    }
+
+    public function withRedirectPathName($redirectPathName){
+        $this->redirectPath = $this->router->pathFor($redirectPathName);
+        return $this;
     }
 }

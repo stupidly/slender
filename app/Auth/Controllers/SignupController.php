@@ -10,7 +10,7 @@ use Psr\Http\Message\{
     ResponseInterface as Response
 };
 
-class LoginController extends Controller{
+class SignupController extends Controller{
 
 	protected $auth;
 
@@ -28,18 +28,15 @@ class LoginController extends Controller{
         if($redirectUrl = $request->getParam('redirect-url')){
             $params['redirectUrl'] = $redirectUrl;
         }
-        return $this->container->get('view')->render($response, 'login.twig', $params);
+        return $this->container->get('view')->render($response, 'signup.twig', $params);
     }
 
-    public function login(Request $request, Response $response, Router $router, Auth $auth)
+    public function signup(Request $request, Response $response, Router $router, Auth $auth)
     {
-        try{
-            $user = $this->auth->attemptCredentials($request->getParam('username'), $request->getParam('password'));
-            if($user === null) throw new \Exception("No such user");
-            return $this->redirect($request, $response, $router);
-        }catch(\Exception $e){
-            return $response->withRedirect($router->pathFor('login'));
+        if (!$user = $this->auth->signUp($request->getParam('username'), $request->getParam('password'), $auth::USER)) {
+            return $response->withRedirect($router->pathFor('signup'));
         }
+        return $this->redirect($request, $response, $router);
     }
 
     protected function redirect(Request $request, Response $response, Router $router){

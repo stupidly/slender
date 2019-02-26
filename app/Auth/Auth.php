@@ -6,6 +6,7 @@ use App\Auth\AuthRepositoryInterface as AuthRepository;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 use Psr\Container\ContainerInterface as Container;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 abstract class Auth implements ContainerAwareInterface{
@@ -30,13 +31,15 @@ abstract class Auth implements ContainerAwareInterface{
         }
     }
 
-    public abstract function attemptCredentials(String $username, String $password) : string;
+    public abstract function attemptCredentials(String $username, String $password);
 
     public abstract function authenticate(Request $request);
+
+    public abstract function logout(Request $request);
 
     public abstract function check() : bool;
 
     public abstract function getRole() : string;
 
-    public abstract function logout();
+    public abstract function signUp(String $username, String $password, String $role);
 }

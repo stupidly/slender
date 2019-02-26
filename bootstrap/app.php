@@ -20,6 +20,7 @@ $container->get('settings')->replace([
     'app' => [
         'name' => getenv('APP_NAME'),
         'debug' => getenv('APP_DEBUG') === 'true',
+        'locale' => getenv('APP_LOCALE'),
     ],
 
     'views' => [
@@ -52,7 +53,8 @@ $container->get('settings')->replace([
 
     'jwt' => [
         'expiry' => getenv('JWT_EXPIRY'),
-        'secret' => getenv('JWT_SECRET')
+        'secret' => getenv('JWT_SECRET'),
+        'cookieName' => getenv('JWT_COOKIE_NAME')
     ]
 ]);
 
@@ -66,5 +68,6 @@ $container->addServiceProvider(new App\Providers\MonologServiceProvider());
 $container->addServiceProvider(new App\Auth\Providers\JwtAuthServiceProvider());
 $container->addServiceProvider(new App\Auth\Providers\EloquentAuthRepositoryProvider());
 $container->addServiceProvider(new App\Auth\Providers\LcobucciJwtLibProvider());
+$container->addServiceProvider(new App\Providers\LocaleServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\TranslateExtension;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
@@ -21,6 +22,7 @@ class ViewServiceProvider extends AbstractServiceProvider{
 
 			$basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
 			$view->addExtension(new TwigExtension($container->get('router'), $basePath));
+			$view->addExtension($container->get(TranslateExtension::class));
 
 			return $view;
 		});

@@ -9,33 +9,51 @@ use App\Auth\Jwt\JwtSubjectInterface;
 use Carbon\Carbon;
 use Exception;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 class JwtAuth extends Auth{
 
     protected $jwtLib;
     protected $repo;
+    protected $token;
 
     public function __construct(JwtLibInterface $jwtLib, AuthRepository $repo){
         $this->jwtLib = $jwtLib;
         $this->repo = $repo;
     }
 
-    public function attemptCredentials(String $username, String $password) : string{
+    public function attemptCredentials(String $username, String $password){
     	if(!$user = $this->repo->byCredentials($username, $password)){
-            return false;
+            throw new Exception('No such user');
         }
 
-        return $this->fromSubject($user);
+        $this->token = $this->fromSubject($user);
+        $this->setCookie();
+        return $user;
     }
 
     public function authenticate(Request $request){
+        $this->authenticateFromCookie($request);
+    }
+
+    protected function authenticateFromCookie(Request $request){
+        if (!$this->token = $this->getTokenFromCookie($request)) {
+            throw new Exception('No authentication cookie');
+        }
+        try {
+            $this->user = $this->repo->byId($this->jwtLib->decode($this->token));
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    protected function authenticateFromHeader(Request $request){
         if (!$header = $this->getAuthorizationHeader($request)) {
             throw new Exception('No authentication header');
         }
-
         try {
-            $token = $this->extractToken($header);
-            $this->user = $this->repo->byId($this->jwtLib->decode($token));
+            $this->token = $this->extractToken($header);
+            $this->user = $this->repo->byId($this->jwtLib->decode($this->token));
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -49,8 +67,18 @@ class JwtAuth extends Auth{
     	return Auth::GUEST;
     }
 
-    public function logout(){
+    public function logout(Request $request){
+        $this->token = null;
+        setcookie($this->container->get('settings')->get('jwt')['cookieName'], "", time()-3600);
+    }
 
+    public function signUp(String $username, String $password, $role){
+        try{
+            $user = $this->repo->register($username, $password, $role);
+            return $user;
+        }catch(\Exception $e){
+            return null;
+        }
     }
 
     protected function fromSubject(JwtSubjectInterface $subject){
@@ -69,9 +97,9 @@ class JwtAuth extends Auth{
         ->withExpiration(Carbon::now()->addMinutes($this->container->get('settings')->get('jwt.expiry'))->getTimestamp());
     }
 
-    protected function getAuthorizationHeader(Request $request) : string
+    protected function getAuthorizationHeader(Request $request)
     {
-        if (!list($header) = $request->getHeader('Authorization', false)) {
+        if (!$request->hasHeader('Authorization') || !list($header) = $request->getHeader('Authorization', false)) {
             return false;
         }
 
@@ -86,5 +114,20 @@ class JwtAuth extends Auth{
 
         return null;
     }
-	
+
+    protected function getTokenFromCookie(Request $request){
+        return $request->getCookieParam($this->container->get('settings')->get('jwt')['cookieName']);
+    }
+
+    protected function setCookie(){
+        setcookie(
+            $this->container->get('settings')->get('jwt')['cookieName'],
+            $this->token,
+            time() + $this->container->get('settings')->get('jwt')['expiry'] * 60,
+            "",
+            "",
+            false, //secure: TRUE
+            true //httponly
+        );
+    }
 }

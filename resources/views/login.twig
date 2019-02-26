@@ -1,0 +1,45 @@
+{% extends 'templates/page.twig' %}
+
+{% block head %}
+    <link rel="stylesheet" href="/css/login.css">
+{% endblock %}
+
+{% block content %}
+<div class="modal" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="login-form" action="{{ path_for('login') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="login-title">{{trans("common.log_in")}}</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username">{{trans("common.username")}}</label>
+                        <input type="username" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="{{trans("common.username")}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">{{trans("common.password")}}</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="{{trans("common.password")}}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="{{ path_for('signup')}}">{{trans("common.sign_up")}}</a>
+                    <button type="submit" class="btn btn-primary">{{trans("common.log_in")}}</button>
+                </div>
+                <input type="hidden" name="redirect-url" value="{{ redirectUrl }}">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block body_end %}
+    <script>
+        $("#login-modal").modal({
+            keyboard: false,
+            show: true,
+            backdrop: "static"
+        });
+    </script>
+{% endblock %}
