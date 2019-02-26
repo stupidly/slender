@@ -9,6 +9,7 @@
  */
 return [
     'message' => [
-    	'test' => 'Succeeded',
+    	'welcome' => 'Welcome %name%!',
+    	'bye' => 'Good bye!',
     ]
 ];

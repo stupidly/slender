@@ -7,13 +7,16 @@
 	    <meta name="author" content="">
 	    <link rel="icon" href="/img/favicon.ico">
         <title>{{trans("common.app_name")}}</title>
+    <link href="/css/page.css" rel="stylesheet">
         {% block head %}{% endblock %}
     </head>
     <body>
+        {% include 'templates/partials/messages.twig' %}
         {% block body_start %}{% endblock %}
         {% block content %}{% endblock %}
-	    <script src="/js/jquery.js"></script>
-	    <script src="/js/bootstrap.js"></script>
+	       <script src="/js/jquery.js"></script>
+	       <script src="/js/bootstrap.js"></script>
+           <script src="/js/page.js"></script>
         {% block body_end %}{% endblock %}
     </body>
 </html>

@@ -1,0 +1,17 @@
+{% if messages.getMessage('info') %}
+    <div class="alert alert-info text-center alert-autoclosing" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('info')|raw | first }}</strong>
+	</div>
+{% endif %}
+
+{% if messages.getMessage('success') %}
+    <div class="alert alert-success text-center alert-autoclosing" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('success')|raw | first }}</strong>
+	</div>
+{% endif %}
+
+{% if messages.getMessage('error') %}
+    <div class="alert alert-danger text-center alert-autoclosing" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('error')|raw | first }}</strong>
+	</div>
+{% endif %}

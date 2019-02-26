@@ -72,7 +72,7 @@ class JwtAuth extends Auth{
         setcookie($this->container->get('settings')->get('jwt')['cookieName'], "", time()-3600);
     }
 
-    public function signUp(String $username, String $password, $role){
+    public function signUp(String $username, String $password, String $role){
         try{
             $user = $this->repo->register($username, $password, $role);
             return $user;
