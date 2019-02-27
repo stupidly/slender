@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="modal" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="signup-title" aria-hidden="true">
+<div class="modal" id="signup-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="signup-form" action="{{ path_for('signup') }}" method="post">
@@ -14,12 +14,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="nickname">{{trans("common.nickname")}}</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="{{ old.nickname }}">
+                    </div>
+                    <div class="form-group">
                         <label for="username">{{trans("common.username")}}</label>
-                        <input type="username" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="{{trans("common.username")}}">
+                        <input type="username" class="form-control" id="username" name="username" placeholder="{{ old.username }}">
                     </div>
                     <div class="form-group">
                         <label for="password">{{trans("common.password")}}</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="{{trans("common.password")}}">
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
                 </div>
                 <div class="modal-footer">

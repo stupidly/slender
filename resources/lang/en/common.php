@@ -14,6 +14,7 @@ return [
     	'email' => 'E-mail',
     	'log_in' => 'Log in',
     	'log_out' => 'Log out',
+        'nickname' => 'Nickname',
     	'password' => 'Password',
     	'password_again' => 'Password again',
     	'sign_up' => 'Sign up',

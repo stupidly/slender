@@ -8,19 +8,22 @@ use App\Auth\Jwt\JwtLibInterface;
 use App\Auth\Jwt\JwtSubjectInterface;
 use Carbon\Carbon;
 use Exception;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 
 class JwtAuth extends Auth{
 
     protected $jwtLib;
+    protected $log;
     protected $repo;
     protected $token;
     protected $user;
 
-    public function __construct(JwtLibInterface $jwtLib, AuthRepository $repo){
+    public function __construct(JwtLibInterface $jwtLib, AuthRepository $repo, LoggerInterface $log){
         $this->jwtLib = $jwtLib;
         $this->repo = $repo;
+        $this->log = $log;
     }
 
     public function attemptCredentials(String $username, String $password){
@@ -29,13 +32,24 @@ class JwtAuth extends Auth{
         }
 
         $this->token = $this->fromSubject($user);
-        $this->setCookie();
         $this->user = $user;
+        $this->setCookie();
+        $_SESSION['user'] = $this->user->username;
+        $this->log->info('User logged in', ['user'=>$this->user->username]);
         return $user;
     }
 
     public function authenticate(Request $request){
         $this->authenticateFromCookie($request);
+        if(in_array('user', $_SESSION)){
+            if($_SESSION['user'] !== $this->user->username){
+                $this->log->warning('Cookie and session mismatch!', ['cookie'=>$this->user->username, 'session'=>$_SESSION['user']]);
+                $this->logout($request);
+                throw new Exception('Cookie and session mismatch!');
+            }
+        }else{
+            $_SESSION['user'] = $this->user->username;
+        }
     }
 
     protected function authenticateFromCookie(Request $request){
@@ -58,8 +72,11 @@ class JwtAuth extends Auth{
     }
 
     public function logout(Request $request){
-        $this->token = null;
+        $this->log->info('User logged out', ['user'=>$this->user->username]);
         setcookie($this->container->get('settings')->get('jwt')['cookieName'], "", time()-3600);
+        $this->token = null;
+        $this->user = null;
+        session_destroy();
     }
 
     public function signUp(String $username, String $password, String $role){
