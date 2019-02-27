@@ -27,6 +27,8 @@
                     <button type="submit" class="btn btn-primary">{{trans("common.log_in")}}</button>
                 </div>
                 <input type="hidden" name="redirect-url" value="{{ redirectUrl }}">
+
+                {{ csrf.field | raw }}
             </form>
         </div>
     </div>

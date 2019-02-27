@@ -27,7 +27,7 @@ class EloquentAuthRepository implements AuthRepositoryInterface, ContainerAwareI
 
     public function byId($id)
     {
-        return User::find($id);
+        return User::findOrFail($id);
     }
 
 	public function register($username, $password, $role) : User{

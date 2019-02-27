@@ -71,5 +71,6 @@ $container->addServiceProvider(new App\Auth\Providers\JwtAuthServiceProvider());
 $container->addServiceProvider(new App\Auth\Providers\EloquentAuthRepositoryProvider());
 $container->addServiceProvider(new App\Auth\Providers\LcobucciJwtLibProvider());
 $container->addServiceProvider(new App\Providers\LocaleServiceProvider());
+$container->addServiceProvider(new App\Providers\CsrfServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';

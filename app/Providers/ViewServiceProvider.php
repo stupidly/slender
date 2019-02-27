@@ -11,7 +11,7 @@ use Slim\Views\TwigExtension;
 class ViewServiceProvider extends AbstractServiceProvider{
 
 	protected $provides = [
-		'view',
+		Twig::class,
 		Messages::class,
 	];
 
@@ -21,7 +21,7 @@ class ViewServiceProvider extends AbstractServiceProvider{
 			$messages = new Messages();
 			return $messages;
 		});
-		$container->share('view', function () use ($container){
+		$container->share(Twig::class, function () use ($container){
 			$view = new Twig(__DIR__ . '/../../resources/views', [
 				'cache' => $container->get('settings')->get('views.cache')
 			]);

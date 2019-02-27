@@ -16,6 +16,7 @@ class JwtAuth extends Auth{
     protected $jwtLib;
     protected $repo;
     protected $token;
+    protected $user;
 
     public function __construct(JwtLibInterface $jwtLib, AuthRepository $repo){
         $this->jwtLib = $jwtLib;
@@ -29,6 +30,7 @@ class JwtAuth extends Auth{
 
         $this->token = $this->fromSubject($user);
         $this->setCookie();
+        $this->user = $user;
         return $user;
     }
 
@@ -41,27 +43,15 @@ class JwtAuth extends Auth{
             throw new Exception('No authentication cookie');
         }
         try {
-            $this->user = $this->repo->byId($this->jwtLib->decode($this->token));
+            $this->user = $this->repo->byId($this->jwtLib->decode($this->token)['sub']);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
 
-    protected function authenticateFromHeader(Request $request){
-        if (!$header = $this->getAuthorizationHeader($request)) {
-            throw new Exception('No authentication header');
-        }
-        try {
-            $this->token = $this->extractToken($header);
-            $this->user = $this->repo->byId($this->jwtLib->decode($this->token));
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+    public function getUser(){
+        return $this->user;
     }
-
-	public function check() : bool{
-		return false;
-	}
 
     public function getRole() : string{
     	return Auth::GUEST;
@@ -74,8 +64,8 @@ class JwtAuth extends Auth{
 
     public function signUp(String $username, String $password, String $role){
         try{
-            $user = $this->repo->register($username, $password, $role);
-            return $user;
+            $this->repo->register($username, $password, $role);
+            return $this->attemptCredentials($username, $password);
         }catch(\Exception $e){
             return null;
         }
@@ -95,24 +85,6 @@ class JwtAuth extends Auth{
         ->withIsuedAt(Carbon::now()->getTimestamp())
         ->withNotBefore(Carbon::now()->getTimestamp())
         ->withExpiration(Carbon::now()->addMinutes($this->container->get('settings')->get('jwt.expiry'))->getTimestamp());
-    }
-
-    protected function getAuthorizationHeader(Request $request)
-    {
-        if (!$request->hasHeader('Authorization') || !list($header) = $request->getHeader('Authorization', false)) {
-            return false;
-        }
-
-        return $header;
-    }
-
-    protected function extractToken($header) : string
-    {
-        if (preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
     }
 
     protected function getTokenFromCookie(Request $request){

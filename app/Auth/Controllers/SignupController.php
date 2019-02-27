@@ -5,6 +5,7 @@ namespace App\Auth\Controllers;
 use App\Auth\Auth;
 use App\Controllers\Controller as Controller;
 use Slim\Router;
+use Slim\Views\Twig;
 use Psr\Http\Message\{
     ServerRequestInterface as Request,
     ResponseInterface as Response
@@ -19,16 +20,12 @@ class SignupController extends Controller{
         $this->auth = $auth;
     }
 
-    public function index(Request $request, Response $response, Router $router, Auth $auth){
-        try{
-            $auth->authenticate($request);
-            return $this->redirect($request, $response, $router);
-        }catch(\Exception $e){}
+    public function index(Request $request, Response $response, Router $router, Auth $auth, Twig $view){
         $params = [];
         if($redirectUrl = $request->getParam('redirect-url')){
             $params['redirectUrl'] = $redirectUrl;
         }
-        return $this->container->get('view')->render($response, 'signup.twig', $params);
+        return $view->render($response, 'signup.twig', $params);
     }
 
     public function signup(Request $request, Response $response, Router $router, Auth $auth)

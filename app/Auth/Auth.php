@@ -37,9 +37,9 @@ abstract class Auth implements ContainerAwareInterface{
 
     public abstract function logout(Request $request);
 
-    public abstract function check() : bool;
-
     public abstract function getRole() : string;
+
+    public abstract function getUser();
 
     public abstract function signUp(String $username, String $password, String $role);
 }
