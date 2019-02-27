@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+use App\Handlers\ProductionErrorHandler;
+
 session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -17,6 +19,7 @@ $container = $app->getContainer();
 $container->inflector(League\Container\ContainerAwareInterface::class)->invokeMethod('setContainer', [$container]);
 
 $container->get('settings')->replace([
+    'determineRouteBeforeAppMiddleware' => true,
     'displayErrorDetails' => getenv('APP_DEBUG') === 'true',
 
     'app' => [
@@ -73,5 +76,6 @@ $container->addServiceProvider(new App\Auth\Providers\EloquentAuthRepositoryProv
 $container->addServiceProvider(new App\Auth\Providers\LcobucciJwtLibProvider());
 $container->addServiceProvider(new App\Providers\LocaleServiceProvider());
 $container->addServiceProvider(new App\Providers\CsrfServiceProvider());
+$container->addServiceProvider(new App\Providers\ErrorHandlerServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';

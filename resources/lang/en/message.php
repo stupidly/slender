@@ -11,5 +11,8 @@ return [
     'message' => [
     	'welcome' => 'Welcome %name%!',
     	'bye' => 'Good bye!',
+    	'error_generic' => 'Shit happens... Sorry!',
+    	'error_not_found' => 'The page does not esist!',
+    	'error_not_allowed' => 'You do not have privilege!',
     ]
 ];

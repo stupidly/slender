@@ -15,10 +15,10 @@ class CsrfServiceProvider extends AbstractServiceProvider{
 		$container = $this->getContainer();
 		$container->share(CsrfMiddleware::class, function () use ($container){
 			$csrf = new CsrfMiddleware();
-                $csrf->setPersistentTokenMode(true);
-                $csrf->setFailureCallable(function($request,$response){
-                    throw new \Error("Csrf error");
-                });
+            $csrf->setPersistentTokenMode(true);
+            $csrf->setFailureCallable(function($request,$response){
+                throw new \Error("Csrf error");
+            });
 			return $csrf;
 		});
 	}
