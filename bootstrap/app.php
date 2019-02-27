@@ -76,6 +76,9 @@ $container->addServiceProvider(new App\Auth\Providers\EloquentAuthRepositoryProv
 $container->addServiceProvider(new App\Auth\Providers\LcobucciJwtLibProvider());
 $container->addServiceProvider(new App\Providers\LocaleServiceProvider());
 $container->addServiceProvider(new App\Providers\CsrfServiceProvider());
-$container->addServiceProvider(new App\Providers\ErrorHandlerServiceProvider());
+if(!$container->get('settings')->get('app')['debug']){
+    $container->addServiceProvider(new App\Providers\ErrorHandlerServiceProvider());
+}
+$container->addServiceProvider(new App\Providers\ValidationServiceProvider());
 
 require_once __DIR__ . '/../routes/web.php';

@@ -8,6 +8,7 @@ use App\Auth\Middleware\AuthMiddleware;
 use App\Controllers\HomeController;
 use App\Middleware\CsrfViewMiddleware;
 use App\Middleware\OldInputMiddleware;
+use App\Middleware\ValidationErrorsMiddleware;
 use Slim\App;
 use Slim\Csrf\Guard as CsrfMiddleware;
 use Slim\Views\Twig;
@@ -16,6 +17,7 @@ use Psr\Http\Message\{
 	ResponseInterface as Response
 };
 
+$app->add($container->get(ValidationErrorsMiddleware::class));
 $app->add($container->get(OldInputMiddleware::class));
 $app->add($container->get(CsrfViewMiddleware::class));
 $app->add($container->get(CsrfMiddleware::class));

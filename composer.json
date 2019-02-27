@@ -20,7 +20,8 @@
         "symfony/translation": "^4.2",
         "symfony/finder": "^4.2",
         "slim/flash": "^0.4.0",
-        "slim/csrf": "^0.8.3"
+        "slim/csrf": "^0.8.3",
+        "respect/validation": "^1.1"
     },
     "autoload": {
         "psr-4": {

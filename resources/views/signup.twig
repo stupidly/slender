@@ -15,15 +15,28 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="nickname">{{trans("common.nickname")}}</label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="{{ old.nickname }}">
+                        <input type="text" class="form-control" id="nickname" name="nickname" value="{{ old.nickname }}">
                     </div>
                     <div class="form-group">
                         <label for="username">{{trans("common.username")}}</label>
-                        <input type="username" class="form-control" id="username" name="username" placeholder="{{ old.username }}">
+                        <input type="username" class="form-control" id="username" name="username" value="{{ old.username }}">
+                        {% if errors.username %}
+                            <small class="form-text text-danger">{{ errors.username | first }}</small>
+                        {% endif %}
                     </div>
                     <div class="form-group">
                         <label for="password">{{trans("common.password")}}</label>
                         <input type="password" class="form-control" id="password" name="password">
+                        {% if errors.password %}
+                            <small class="form-text text-danger">{{ errors.password | first }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="password-again">{{trans("common.password_again")}}</label>
+                        <input type="password" class="form-control" id="password-again" name="password_again">
+                        {% if errors.password_again %}
+                            <small class="form-text text-danger">{{ errors.password_again | first }}</small>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="modal-footer">
