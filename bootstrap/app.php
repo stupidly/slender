@@ -23,6 +23,7 @@ $container->get('settings')->replace([
         'name' => getenv('APP_NAME'),
         'debug' => getenv('APP_DEBUG') === 'true',
         'locale' => getenv('APP_LOCALE'),
+        'ssl' => getenv('APP_SSL') === 'true',
     ],
 
     'views' => [

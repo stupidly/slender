@@ -98,7 +98,7 @@ class JwtAuth extends Auth{
             time() + $this->container->get('settings')->get('jwt')['expiry'] * 60,
             "",
             "",
-            false, //secure: TRUE
+            $this->container->get('settings')->get('app')['ssl'],
             true //httponly
         );
     }
