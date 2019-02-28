@@ -1,10 +1,12 @@
 {% extends 'templates/page.twig' %}
 
 {% block head %}
+    {{ parent() }}
     <link rel="stylesheet" href="/css/login.css">
 {% endblock %}
 
 {% block content %}
+    {{ parent() }}
 <div class="modal" id="login-modal" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -37,6 +39,7 @@
 
 
 {% block body_end %}
+    {{ parent() }}
     <script>
         $("#login-modal").modal({
             keyboard: false,

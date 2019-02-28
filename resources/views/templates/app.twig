@@ -1,9 +1,11 @@
 {% extends 'templates/page.twig' %}
 
 {% block head %}
+	{{ parent() }}
 	<link href="/css/app.css" rel="stylesheet">
 {% endblock %}
 
 {% block body_start %}
+	{{ parent() }}
     {% include "templates/partials/navigation.twig" %}
 {% endblock %}
