@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\View\CommonExtension;
 use App\View\TranslateExtension;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Slim\Flash\Messages;
+use Slim\Http\Environment;
+use Slim\Http\Uri;
+use Slim\Router;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 
@@ -26,9 +30,10 @@ class ViewServiceProvider extends AbstractServiceProvider{
 				'cache' => $container->get('settings')->get('views.cache')
 			]);
 
-			$basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
-			$view->addExtension(new TwigExtension($container->get('router'), $basePath));
+			$uri = Uri::createFromEnvironment(new Environment($_SERVER));
+			$view->addExtension(new TwigExtension($container->get(Router::class), $uri));
 			$view->addExtension($container->get(TranslateExtension::class));
+			$view->addExtension($container->get(CommonExtension::class));
             $view->getEnvironment()->addGlobal("messages", $container->get(Messages::class));
 			return $view;
 		});

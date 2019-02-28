@@ -34,6 +34,6 @@ $app->group('', function (App $app) {
 		return $this->get(Twig::class)->render($response, "page1.twig", [
 			"text" => "Csoki",
 		]);
-	});
+	})->setName('page1');
 	$app->get("/logout", LogoutController::class . ":index");
 })->add($container->get(AuthMiddleware::class)->withRedirectPathName('login')->withRoles([Auth::USER,Auth::ADMIN]));
