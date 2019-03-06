@@ -1,11 +1,24 @@
-{% extends 'templates/page.twig' %}
-
-{% block head %}
-	{{ parent() }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+	    <link rel="icon" href="/img/favicon.ico">
+        <title>{{trans("common.app_name")}}</title>
 	<link href="/css/app.css" rel="stylesheet">
-{% endblock %}
-
-{% block body_start %}
-	{{ parent() }}
-    {% include "templates/partials/navigation.twig" %}
-{% endblock %}
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        {% include 'templates/partials/messages.twig' %}
+        {% block body_start %}
+    		{% include "templates/partials/navigation.twig" %}
+		{% endblock %}
+        {% block content %}{% endblock %}
+       <script src="/js/jquery.js"></script>
+       <script src="/js/bootstrap.js"></script>
+       <script src="/js/app.js"></script>
+        {% block body_end %}{% endblock %}
+    </body>
+</html>

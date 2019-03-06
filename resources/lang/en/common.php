@@ -19,5 +19,9 @@ return [
     	'password_again' => 'Password again',
     	'sign_up' => 'Sign up',
     	'username' => 'Username',
+        'info' => 'Info',
+        'success' => 'Success',
+        'warning' => 'Warning',
+        'error' => 'Error',
     ]
 ];

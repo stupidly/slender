@@ -1,9 +1,11 @@
-{% extends 'templates/page.twig' %}
+{% extends 'templates/app.twig' %}
 
 {% block head %}
     {{ parent() }}
     <link rel="stylesheet" href="/css/signup.css">
 {% endblock %}
+
+{% block body_start %}{% endblock %}
 
 {% block content %}
     {{ parent() }}

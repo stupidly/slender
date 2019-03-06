@@ -7,3 +7,4 @@ public/js/bootstrap.js
 public/js/jquery.js
 resources/scss/bootstrap.custom.scss
 resources/scss/font-awesome.custom.scss
+slim-skeleton.sublime-*

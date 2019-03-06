@@ -1,17 +1,43 @@
-{% if messages.getMessage('info') %}
-    <div class="alert alert-info text-center alert-autoclosing" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('info')|raw | first }}</strong>
-	</div>
-{% endif %}
+<div class="toast-container" style="position: absolute; top: 0; right: 0; z-index: 9999">
 
-{% if messages.getMessage('success') %}
-    <div class="alert alert-success text-center alert-autoclosing" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('success')|raw | first }}</strong>
-	</div>
-{% endif %}
+	{% for message in messages.getMessage('error')|raw %}
+		{% include 'templates/partials/message.twig' with {
+			'bgClass': 'bg-danger',
+			'textClass': 'text-white',
+			'icon': 'fa-bolt',
+			'title': trans('common.error'),
+			'message': message
+		} %}
+	{% endfor %}
 
-{% if messages.getMessage('error') %}
-    <div class="alert alert-danger text-center alert-autoclosing" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>{{ messages.getMessage('error')|raw | first }}</strong>
-	</div>
-{% endif %}
+	{% for message in messages.getMessage('warning')|raw %}
+		{% include 'templates/partials/message.twig' with {
+			'bgClass': 'bg-warning',
+			'textClass': 'text-white',
+			'icon': 'fa-exclamation',
+			'title': trans('common.warning'),
+			'message': message
+		} %}
+	{% endfor %}
+
+	{% for message in messages.getMessage('success')|raw %}
+		{% include 'templates/partials/message.twig' with {
+			'bgClass': 'bg-success',
+			'textClass': 'text-white',
+			'icon': 'fa-check',
+			'title': trans('common.success'),
+			'message': message
+		} %}
+	{% endfor %}
+
+	{% for message in messages.getMessage('info')|raw %}
+		{% include 'templates/partials/message.twig' with {
+			'bgClass': 'bg-info',
+			'textClass': 'text-white',
+			'icon': 'fa-info',
+			'title': trans('common.info'),
+			'message': message
+		} %}
+	{% endfor %}
+
+</div>
