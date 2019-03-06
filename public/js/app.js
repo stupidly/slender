@@ -5,8 +5,7 @@ $(function () {
 function initMessages(timeout = 2000){
 	$("div.toast")
 		.toast({
-			delay: timeout,
-			autohide: false
+			delay: timeout
 		})
 		.toast("show");
 }
