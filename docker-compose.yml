@@ -3,7 +3,7 @@ services:
   app:
     build:
       args:
-        user: kissg
+        user: ssuser
         uid: 1000
         appname: ${APP_NAME}
       context: ./
