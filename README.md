@@ -3,9 +3,11 @@ A slender starter structure for Slim 3
 
 ## Installation
 git clone ...
-composer install
+cp .env.example .env
+docker-compose up
+docker-compose exec app composer install
 
 ## SCSS
-Compile resources/scss/app.scss to public/css/app.css manually.
+docker-compose exec app sass --watch resources/scss/:public/css/ &
 
 

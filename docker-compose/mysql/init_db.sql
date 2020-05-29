@@ -1,14 +1,12 @@
-CREATE DATABASE IF NOT EXISTS `slimskeleton` CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-CREATE USER 'slimskeleton'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON `slimskeleton`.* TO 'slimskeleton'@'localhost';
-
 #roles
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
 	`role` VARCHAR(255) NOT NULL UNIQUE ,
 	PRIMARY KEY (`role`)) ENGINE = InnoDB;
 INSERT INTO `roles` (`role`) VALUES ('user'), ('admin');
 
 #users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
 	`username` VARCHAR(255) NOT NULL UNIQUE ,
 	`role` VARCHAR(255) NOT NULL DEFAULT 'user' ,
